@@ -468,22 +468,19 @@ System.register(['lodash', 'jquery', 'moment', '../datasource-zabbix/utils', 'ap
           key: 'addTriggerDataSource',
           value: function addTriggerDataSource(triggers, ds) {
             var dsurl = this.panel.targets[ds].zabbixurl;
+            var baseUrl;
+            if (!dsurl) {
+              baseUrl = null;
+            } else {
+              baseUrl = dsurl.filter;
+            }
 
             _.each(triggers, function (trigger) {
               trigger.datasource = ds;
-              if (dsurl) {
-                var baseUrl = dsurl.filter;
+              if (baseUrl) {
                 if (trigger.hosts) {
-                  var hostidsUrl = 'filter_set=1';
-                  var uniqueHosts = trigger.hosts.map(function (item) {
-                    return item.hostid;
-                  }).filter(function (value, index, self) {
-                    return self.indexOf(value) === index;
-                  });
-                  uniqueHosts.forEach(function (item) {
-                    hostidsUrl += '&hostids[]=' + item;
-                  });
-                  trigger.datasource_url = baseUrl + 'latest.php?' + hostidsUrl;
+                  var hostId = trigger.hosts[0].hostid;
+                  trigger.datasource_url = baseUrl + 'hostinventories.php?hostid=' + hostId;
                 } else {
                   trigger.datasource_url = baseUrl;
                 }

@@ -335,19 +335,20 @@ export class TriggerPanelCtrl extends PanelCtrl {
 
   addTriggerDataSource(triggers, ds) {
     var dsurl = this.panel.targets[ds].zabbixurl;
+    var baseUrl;
+    if (!dsurl) {
+      baseUrl = null;
+    }
+    else {
+      baseUrl = dsurl.filter;
+    }
 
     _.each(triggers, (trigger) => {
       trigger.datasource = ds;
-      if (dsurl) {
-        var baseUrl = dsurl.filter;
+      if (baseUrl) {
         if (trigger.hosts) {
-          let hostidsUrl = 'filter_set=1';
-          let uniqueHosts = trigger.hosts.map(item => item.hostid)
-              .filter((value, index, self) => self.indexOf(value) === index);
-          uniqueHosts.forEach(function (item) {
-            hostidsUrl += '&hostids[]=' + item;
-          });
-          trigger.datasource_url = baseUrl + 'latest.php?' + hostidsUrl;
+          let hostId = trigger.hosts[0].hostid;
+          trigger.datasource_url = baseUrl + 'hostinventories.php?hostid=' + hostId;
         }
         else {
           trigger.datasource_url = baseUrl;
