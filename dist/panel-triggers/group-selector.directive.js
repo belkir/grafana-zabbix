@@ -59,8 +59,8 @@ System.register(['angular', 'lodash'], function (_export, _context) {
           _classCallCheck(this, GroupSelectorCtrl);
 
           this.scope = $scope;
-          var groups = $scope.groups;
-          var options = $scope.options;
+          var groups = $scope.groups || [];
+          var options = ['all'].concat($scope.options);
           this.gOptions = {
             multi: true,
             current: { value: groups, text: groups.join(" + ") },

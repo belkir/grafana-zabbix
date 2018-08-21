@@ -26,8 +26,8 @@ class GroupSelectorCtrl {
   /** @ngInject */
   constructor($scope) {
     this.scope = $scope;
-    let groups = $scope.groups;
-    let options = $scope.options;
+    let groups = $scope.groups || [];
+    let options = ['all'].concat($scope.options);
     this.gOptions = {
       multi: true,
       current: {value: groups, text: groups.join(" + ")},

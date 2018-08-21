@@ -333,10 +333,14 @@ System.register(['lodash', 'jquery', 'moment', '../datasource-zabbix/utils', 'ap
                 var triggerFilter = _this5.panel.targets[ds];
 
                 // Replace template variables
-                // var groupFilter = datasource.replaceTemplateVars(triggerFilter.group.filter);
+                var groupFilter = datasource.replaceTemplateVars(triggerFilter.group.filter);
                 var groupsFilter = [];
                 if (triggerFilter.groups) {
                   groupsFilter = triggerFilter.groups.filter;
+                }
+                groupsFilter.push(groupFilter);
+                if (groupsFilter.indexOf('all') >= 0) {
+                  groupsFilter = [];
                 }
                 var hostFilter = datasource.replaceTemplateVars(triggerFilter.host.filter);
                 var appFilter = datasource.replaceTemplateVars(triggerFilter.application.filter);
