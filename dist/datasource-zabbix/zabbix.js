@@ -113,7 +113,11 @@ System.register(['angular', 'lodash', './utils', './zabbixAPI.service.js', './za
         key: 'getGroups',
         value: function getGroups(groupFilter) {
           return this.getAllGroups().then(function (groups) {
-            return findByFilter(groups, groupFilter);
+            if (groupFilter.length > 1) {
+              return findByGroupFilter(groups, groupFilter);
+            } else {
+              return findByFilter(groups, groupFilter);
+            }
           });
         }
       }, {
@@ -295,6 +299,19 @@ System.register(['angular', 'lodash', './utils', './zabbixAPI.service.js', './za
       return filterByRegex(list, filter);
     } else {
       return findByName(list, filter);
+    }
+  }
+
+  function findByGroupFilter(list, filter_list) {
+    var finded = _.filter(list, function (group) {
+      if (filter_list.indexOf(group.name) >= 0) {
+        return group;
+      }
+    });
+    if (finded) {
+      return finded;
+    } else {
+      return [];
     }
   }
 

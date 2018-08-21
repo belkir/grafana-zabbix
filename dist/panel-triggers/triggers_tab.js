@@ -131,6 +131,11 @@ System.register(['lodash', '../datasource-zabbix/utils', './triggers_panel_ctrl'
             this.parseTarget();
           }
         }, {
+          key: 'groupsChanged',
+          value: function groupsChanged() {
+            this.parseTarget();
+          }
+        }, {
           key: 'parseTarget',
           value: function parseTarget() {
             var _this3 = this;

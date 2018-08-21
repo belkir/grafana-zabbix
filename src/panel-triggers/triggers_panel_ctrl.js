@@ -89,6 +89,7 @@ export class TriggerPanelCtrl extends PanelCtrl {
 
     this.panel = migratePanelSchema(this.panel);
     _.defaultsDeep(this.panel, _.cloneDeep(PANEL_DEFAULTS));
+    this.ds_groups = {};
 
     this.available_datasources = _.map(this.getZabbixDataSources(), 'name');
     if (this.panel.datasources.length === 0) {
@@ -109,6 +110,9 @@ export class TriggerPanelCtrl extends PanelCtrl {
       return this.datasourceSrv.get(ds)
           .then(datasource => {
             this.datasources[ds] = datasource;
+            datasource.zabbix.getAllGroups().then(groups => {
+              this.ds_groups[ds] = _.map(groups, 'name');
+            });
             return datasource;
           });
     });
@@ -210,7 +214,11 @@ export class TriggerPanelCtrl extends PanelCtrl {
             var triggerFilter = this.panel.targets[ds];
 
             // Replace template variables
-            var groupFilter = datasource.replaceTemplateVars(triggerFilter.group.filter);
+            // var groupFilter = datasource.replaceTemplateVars(triggerFilter.group.filter);
+            var groupsFilter = [];
+            if (triggerFilter.groups) {
+              groupsFilter = triggerFilter.groups.filter;
+            }
             var hostFilter = datasource.replaceTemplateVars(triggerFilter.host.filter);
             var appFilter = datasource.replaceTemplateVars(triggerFilter.application.filter);
 
@@ -234,7 +242,7 @@ export class TriggerPanelCtrl extends PanelCtrl {
               });
             });
 
-            return zabbix.getTriggers(groupFilter, hostFilter, appFilter, triggersOptions);
+            return zabbix.getTriggers(groupsFilter, hostFilter, appFilter, triggersOptions);
           }).then(triggers => {
             let hostids = _.map(triggers, function (trigger) {
               if (trigger.hosts){

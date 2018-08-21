@@ -194,6 +194,7 @@ System.register(['lodash', 'jquery', 'moment', '../datasource-zabbix/utils', 'ap
 
           _this.panel = migratePanelSchema(_this.panel);
           _.defaultsDeep(_this.panel, _.cloneDeep(PANEL_DEFAULTS));
+          _this.ds_groups = {};
 
           _this.available_datasources = _.map(_this.getZabbixDataSources(), 'name');
           if (_this.panel.datasources.length === 0) {
@@ -218,6 +219,9 @@ System.register(['lodash', 'jquery', 'moment', '../datasource-zabbix/utils', 'ap
               // Load datasource
               return _this2.datasourceSrv.get(ds).then(function (datasource) {
                 _this2.datasources[ds] = datasource;
+                datasource.zabbix.getAllGroups().then(function (groups) {
+                  _this2.ds_groups[ds] = _.map(groups, 'name');
+                });
                 return datasource;
               });
             });
@@ -329,7 +333,11 @@ System.register(['lodash', 'jquery', 'moment', '../datasource-zabbix/utils', 'ap
                 var triggerFilter = _this5.panel.targets[ds];
 
                 // Replace template variables
-                var groupFilter = datasource.replaceTemplateVars(triggerFilter.group.filter);
+                // var groupFilter = datasource.replaceTemplateVars(triggerFilter.group.filter);
+                var groupsFilter = [];
+                if (triggerFilter.groups) {
+                  groupsFilter = triggerFilter.groups.filter;
+                }
                 var hostFilter = datasource.replaceTemplateVars(triggerFilter.host.filter);
                 var appFilter = datasource.replaceTemplateVars(triggerFilter.application.filter);
 
@@ -353,7 +361,7 @@ System.register(['lodash', 'jquery', 'moment', '../datasource-zabbix/utils', 'ap
                   });
                 });
 
-                return zabbix.getTriggers(groupFilter, hostFilter, appFilter, triggersOptions);
+                return zabbix.getTriggers(groupsFilter, hostFilter, appFilter, triggersOptions);
               }).then(function (triggers) {
                 var hostids = _.map(triggers, function (trigger) {
                   if (trigger.hosts) {

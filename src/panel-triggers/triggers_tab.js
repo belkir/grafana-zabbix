@@ -78,6 +78,10 @@ class TriggersTabCtrl {
     this.parseTarget();
   }
 
+  groupsChanged() {
+    this.parseTarget();
+  }
+
   parseTarget() {
     this.initDatasources()
     .then(() => {
