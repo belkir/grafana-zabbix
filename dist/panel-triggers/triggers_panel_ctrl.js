@@ -338,7 +338,9 @@ System.register(['lodash', 'jquery', 'moment', '../datasource-zabbix/utils', 'ap
                 if (triggerFilter.groups) {
                   groupsFilter = triggerFilter.groups.filter;
                 }
-                groupsFilter.push(groupFilter);
+                if (groupsFilter.indexOf(groupFilter) < 0 && groupFilter !== "") {
+                  groupsFilter.push(groupFilter);
+                }
                 if (groupsFilter.indexOf('all') >= 0) {
                   groupsFilter = [];
                 }
