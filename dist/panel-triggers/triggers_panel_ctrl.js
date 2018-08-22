@@ -336,7 +336,7 @@ System.register(['lodash', 'jquery', 'moment', '../datasource-zabbix/utils', 'ap
                 var groupFilter = datasource.replaceTemplateVars(triggerFilter.group.filter);
                 var groupsFilter = [];
                 if (triggerFilter.groups) {
-                  groupsFilter = triggerFilter.groups.filter;
+                  groupsFilter = groupsFilter.concat(triggerFilter.groups.filter);
                 }
                 if (groupsFilter.indexOf(groupFilter) < 0 && groupFilter !== "") {
                   groupsFilter.push(groupFilter);

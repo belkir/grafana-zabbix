@@ -303,10 +303,9 @@ System.register(['angular', 'lodash', './utils', './zabbixAPI.service.js', './za
   }
 
   function findByGroupFilter(list, filter_list) {
-    var finded = _.filter(list, function (group) {
-      if (filter_list.indexOf(group.name) >= 0) {
-        return group;
-      }
+    var finded = [];
+    _.each(filter_list, function (filter) {
+      finded = finded.concat(findByFilter(list, filter));
     });
     return finded;
   }
