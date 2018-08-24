@@ -88,12 +88,14 @@
                 on-ack="ctrl.acknowledgeTrigger" context="ctrl">
               </ack-tooltip>
 
-              <a ng-if="trigger.problem_url" href="{{trigger.problem_url}}" target="_blank" title="Open problem in Zabbix">
-                <i class="fa fa-chain-broken"></i>
+              <a ng-if="trigger.problem_url" href="{{trigger.problem_url}}" target="_blank" title="Open problem in Zabbix" style="color: #ed2e18">
+                <i style="color: red" class="fa fa-chain-broken"></i>
+                Problem
               </a>
 
-              <a ng-if="trigger.charts_url" href="{{trigger.charts_url}}" target="_blank" title="Open charts in Zabbix">
-                <i class="fa fa-line-chart"></i>
+              <a ng-if="trigger.charts_url" href="{{trigger.charts_url}}" target="_blank" title="Open charts in Zabbix" style="color: rgb(118, 172, 104)">
+                <i style="color: green" class="fa fa-line-chart"></i>
+                 Charts
               </a>
 
             </div>
