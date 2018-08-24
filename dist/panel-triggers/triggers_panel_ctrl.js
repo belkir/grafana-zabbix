@@ -305,7 +305,7 @@ System.register(['lodash', 'jquery', 'moment', '../datasource-zabbix/utils', 'ap
 
             triggers = _.map(triggers, this.formatTrigger.bind(this));
             triggers = this.filterTriggersPost(triggers);
-            triggers = this.sortTriggers(triggers);
+            // triggers = this.sortTriggers(triggers);
 
             // Limit triggers number
             triggers = triggers.slice(0, this.panel.limit || PANEL_DEFAULTS.limit);
@@ -331,6 +331,8 @@ System.register(['lodash', 'jquery', 'moment', '../datasource-zabbix/utils', 'ap
                 var zabbix = datasource.zabbix;
                 var showEvents = _this5.panel.showEvents.value;
                 var triggerFilter = _this5.panel.targets[ds];
+                var triggerLimit = _this5.panel.limit;
+                var triggerSortField = _this5.panel.sortTriggersBy.value;
 
                 // Replace template variables
                 var groupFilter = datasource.replaceTemplateVars(triggerFilter.group.filter);
@@ -348,7 +350,9 @@ System.register(['lodash', 'jquery', 'moment', '../datasource-zabbix/utils', 'ap
                 var appFilter = datasource.replaceTemplateVars(triggerFilter.application.filter);
 
                 var triggersOptions = {
-                  showTriggers: showEvents
+                  showTriggers: showEvents,
+                  triggerLimit: triggerLimit,
+                  triggerSortField: triggerSortField
                 };
 
                 curDS = datasource;
@@ -528,6 +532,8 @@ System.register(['lodash', 'jquery', 'moment', '../datasource-zabbix/utils', 'ap
                 if (trigger.hosts) {
                   var hostId = trigger.hosts[0].hostid;
                   trigger.datasource_url = baseUrl + 'hostinventories.php?hostid=' + hostId;
+                  trigger.problem_url = baseUrl + 'zabbix.php?action=problem.view&page=1&filter_show=1&filter_set=1&filter_hostids[]=' + hostId;
+                  trigger.charts_url = baseUrl + 'charts.php?fullscreen=0&groupid=0&graphid=0&hostid=' + hostId;
                 } else {
                   trigger.datasource_url = baseUrl;
                 }

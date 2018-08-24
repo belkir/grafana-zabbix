@@ -188,7 +188,7 @@ export class TriggerPanelCtrl extends PanelCtrl {
 
     triggers = _.map(triggers, this.formatTrigger.bind(this));
     triggers = this.filterTriggersPost(triggers);
-    triggers = this.sortTriggers(triggers);
+    // triggers = this.sortTriggers(triggers);
 
     // Limit triggers number
     triggers = triggers.slice(0, this.panel.limit || PANEL_DEFAULTS.limit);
@@ -212,6 +212,8 @@ export class TriggerPanelCtrl extends PanelCtrl {
             var zabbix = datasource.zabbix;
             var showEvents = this.panel.showEvents.value;
             var triggerFilter = this.panel.targets[ds];
+            var triggerLimit = this.panel.limit;
+            var triggerSortField = this.panel.sortTriggersBy.value;
 
             // Replace template variables
             var groupFilter = datasource.replaceTemplateVars(triggerFilter.group.filter);
@@ -229,7 +231,9 @@ export class TriggerPanelCtrl extends PanelCtrl {
             var appFilter = datasource.replaceTemplateVars(triggerFilter.application.filter);
 
             let triggersOptions = {
-              showTriggers: showEvents
+              showTriggers: showEvents,
+              triggerLimit: triggerLimit,
+              triggerSortField: triggerSortField
             };
 
             curDS = datasource;
@@ -396,6 +400,8 @@ export class TriggerPanelCtrl extends PanelCtrl {
         if (trigger.hosts) {
           let hostId = trigger.hosts[0].hostid;
           trigger.datasource_url = baseUrl + 'hostinventories.php?hostid=' + hostId;
+          trigger.problem_url = baseUrl + 'zabbix.php?action=problem.view&page=1&filter_show=1&filter_set=1&filter_hostids[]=' + hostId;
+          trigger.charts_url = baseUrl + 'charts.php?fullscreen=0&groupid=0&graphid=0&hostid=' + hostId;
         }
         else {
           trigger.datasource_url = baseUrl;

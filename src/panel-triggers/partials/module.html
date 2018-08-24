@@ -76,7 +76,7 @@
             <span>{{trigger.lastchange || "last change unknown"}}</span>
 
             <div class="trigger-info-block zbx-status-icons">
-              <a ng-if="trigger.url" href="{{trigger.url}}" target="_blank">
+              <a ng-if="trigger.url" href="{{trigger.url}}" target="_blank" title="Trigger URL">
                 <i class="fa fa-external-link"></i>
               </a>
 
@@ -87,6 +87,15 @@
               <ack-tooltip ng-if="trigger.lastEvent" ack="trigger.acknowledges" trigger="trigger"
                 on-ack="ctrl.acknowledgeTrigger" context="ctrl">
               </ack-tooltip>
+
+              <a ng-if="trigger.problem_url" href="{{trigger.problem_url}}" target="_blank" title="Open problem in Zabbix">
+                <i class="fa fa-chain-broken"></i>
+              </a>
+
+              <a ng-if="trigger.charts_url" href="{{trigger.charts_url}}" target="_blank" title="Open charts in Zabbix">
+                <i class="fa fa-line-chart"></i>
+              </a>
+
             </div>
           </div>
         </li>

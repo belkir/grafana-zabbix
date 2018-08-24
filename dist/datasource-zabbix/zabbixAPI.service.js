@@ -316,6 +316,8 @@ System.register(['angular', 'lodash', './utils', './zabbixAPICore.service'], fun
         key: 'getTriggers',
         value: function getTriggers(groupids, hostids, applicationids, options) {
           var showTriggers = options.showTriggers,
+              triggerLimit = options.triggerLimit,
+              triggerSortField = options.triggerSortField,
               maintenance = options.maintenance,
               timeFrom = options.timeFrom,
               timeTo = options.timeTo;
@@ -339,11 +341,16 @@ System.register(['angular', 'lodash', './utils', './zabbixAPICore.service'], fun
             selectHosts: ['name', 'host', 'maintenance_status'],
             selectItems: ['name', 'key_', 'lastvalue'],
             selectLastEvent: 'extend',
-            selectTags: 'extend'
+            selectTags: 'extend',
+            sortfield: triggerSortField,
+            sortorder: "DESC"
           };
 
           if (showTriggers) {
             params.filter.value = showTriggers;
+          }
+          if (triggerLimit) {
+            params.limit = triggerLimit;
           }
 
           if (maintenance) {

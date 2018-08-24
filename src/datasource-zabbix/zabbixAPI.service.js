@@ -345,7 +345,7 @@ function ZabbixAPIServiceFactory(alertSrv, zabbixAPICoreService) {
     }
 
     getTriggers(groupids, hostids, applicationids, options) {
-      let {showTriggers, maintenance, timeFrom, timeTo} = options;
+      let {showTriggers, triggerLimit, triggerSortField, maintenance, timeFrom, timeTo} = options;
 
       let params = {
         output: 'extend',
@@ -365,11 +365,17 @@ function ZabbixAPIServiceFactory(alertSrv, zabbixAPICoreService) {
         selectHosts: ['name', 'host', 'maintenance_status'],
         selectItems: ['name', 'key_', 'lastvalue'],
         selectLastEvent: 'extend',
-        selectTags: 'extend'
+        selectTags: 'extend',
+        sortfield: triggerSortField,
+        sortorder: "DESC"
       };
 
       if (showTriggers) {
         params.filter.value = showTriggers;
+      }
+
+      if (triggerLimit) {
+        params.limit = triggerLimit;
       }
 
       if (maintenance) {

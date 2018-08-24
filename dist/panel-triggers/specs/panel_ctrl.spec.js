@@ -106,26 +106,26 @@ describe('TriggerPanelCtrl', () => {
       });
     });
 
-    it('should sort triggers by time by default', (done) => {
-      ctx.panelCtrl.onRefresh().then(() => {
-        let trigger_ids = _.map(ctx.panelCtrl.triggerList, 'triggerid');
-        expect(trigger_ids).toEqual([
-          '2', '4', '3', '1'
-        ]);
-        done();
-      });
-    });
-
-    it('should sort triggers by severity', (done) => {
-      ctx.panelCtrl.panel.sortTriggersBy = { text: 'severity', value: 'priority' };
-      ctx.panelCtrl.onRefresh().then(() => {
-        let trigger_ids = _.map(ctx.panelCtrl.triggerList, 'triggerid');
-        expect(trigger_ids).toEqual([
-          '1', '3', '2', '4'
-        ]);
-        done();
-      });
-    });
+    // it('should sort triggers by time by default', (done) => {
+    //   ctx.panelCtrl.onRefresh().then(() => {
+    //     let trigger_ids = _.map(ctx.panelCtrl.triggerList, 'triggerid');
+    //     expect(trigger_ids).toEqual([
+    //       '2', '4', '3', '1'
+    //     ]);
+    //     done();
+    //   });
+    // });
+    //
+    // it('should sort triggers by severity', (done) => {
+    //   ctx.panelCtrl.panel.sortTriggersBy = { text: 'severity', value: 'priority' };
+    //   ctx.panelCtrl.onRefresh().then(() => {
+    //     let trigger_ids = _.map(ctx.panelCtrl.triggerList, 'triggerid');
+    //     expect(trigger_ids).toEqual([
+    //       '1', '3', '2', '4'
+    //     ]);
+    //     done();
+    //   });
+    // });
 
     it('should add acknowledges to trigger', (done) => {
       ctx.panelCtrl.onRefresh().then(() => {
